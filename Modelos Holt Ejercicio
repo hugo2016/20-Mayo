@@ -1,0 +1,117 @@
+install.packages("forecast")
+require (forecast)
+require (fpp)
+deso <- read.csv ("C:\\Users\\SALA-E21\\Downloads\\ica.csv")
+ica <- ts (deso[,1],start =2013, frequency = 12)
+##Holt lineal##
+ajuste1 <- holt(ica, alpha=0.3, beta=1, initial="simple", h=12)
+##Holt exponencial##
+ajuste2 <- holt(ica, alpha=0.3, beta=0.1, initial="simple", exponential = T, h=12)
+##Holt aditivo amortiguado##
+ajuste3 <- holt(ica,damped = T, alpha=0.3, beta = 0.1, gamma=0.5)
+##Holt multiplicativo amortiguado##
+ajuste4 <- holt(ica,damped = T, exponential = T, alpha=0.3, beta = 0.1, gamma=0.5)
+##Holt Winter adictivo##
+##ajuste5 <- hw(ica, seasonal = "additive")
+##Holt Winter adictivo##
+##ajuste6 <- hw(ica, seasonal = "multiplicative")
+plot(ajuste1, plot.conf=FALSE, ylab="Precio",
+     xlab="Año", main="", fcol="white", type="o")
+
+###Graficando los ajustes
+lines(fitted(ajuste1), col="blue", type="o")
+lines(fitted(ajuste2), col="red", type="o")
+lines(fitted(ajuste3), col="green", type="o")
+lines(fitted(ajuste4), col="yellow", type="o")
+##lines(fitted(ajuste5), col="brown", type="o")
+##lines(fitted(ajuste6), col="violet", type="o")
+
+####Graficando la media del pronostico de cada uno de los modelos
+lines(ajuste1$mean, col="blue", type="o")
+lines(ajuste2$mean, col="red", type="o")
+lines(ajuste3$mean, col="green", type="o")
+lines(ajuste4$mean, col="yellow", type="o")
+##lines(ajuste5$mean, col="brown", type="o")
+##lines(ajuste6$mean, col="violet", type="o")
+legend("topleft",lty=1, col=c(1,"blue","red","green","yellow","brown","violet"), 
+       c("data", expression("Lineal"), expression("Exponencial"),
+         expression("Aditivo Amortiguado"),expression("Mult. Amortiguado")),pch=1)
+
+names (ajuste1)
+aju1 <- ajuste1$fitted
+aju2 <- ajuste2$fitted
+aju3 <- ajuste3$fitted
+aju4 <- ajuste4$fitted
+
+resmod1 <- (ica - aju1)
+resmod2 <- (ica - aju2)
+resmod3 <- (ica - aju3)
+resmod4 <- (ica - aju4)
+
+modholt <- data.frame(ica, aju1, aju2, aju3, resmod1, resmod2, resmod3)
+View (modholt)
+res1 <- (resmod1- ajuste1$residuals)
+res2 <- (resmod2- ajuste2$residuals)
+res3 <- (resmod3- ajuste3$residuals)
+res4 <- (resmod4- ajuste4$residuals)
+
+modholtrest <- data.frame(res1,res2,res3,res4)
+View (modholtrest)
+
+######Segunda serie
+deso <- read.csv ("C:\\Users\\SALA-E21\\Downloads\\ica.csv")
+bimbo <- ts (deso[,2], start =2012, frequency = 12)
+##Holt lineal##
+ajuste1.1 <- holt(bimbo, alpha=0.3, beta=1, initial="simple", h=12)
+##Holt exponencial##
+ajuste1.2 <- holt(bimbo, alpha=0.3, beta=0.1, initial="simple", exponential = T, h=12)
+##Holt aditivo amortiguado##
+ajuste1.3 <- holt(bimbo,damped = T, alpha=0.3, beta = 0.1, gamma=0.5)
+##Holt multiplbimbotivo amortiguado##
+ajuste1.4 <- holt(bimbo,damped = T, exponential = T, alpha=0.3, beta = 0.1, gamma=0.5)
+##Holt Winter adictivo##
+##ajuste1.5 <- hw(bimbo, seasonal = "additive")
+##Holt Winter adictivo##
+##ajuste1.6 <- hw(bimbo, seasonal = "multiplbimbotive")
+plot(ajuste1.1, plot.conf=FALSE, ylab="Precio",
+     xlab="Año", main="", fcol="white", type="o")
+
+###Grafbimbondo los ajuste1.s
+lines(fitted(ajuste1.1), col="blue", type="o")
+lines(fitted(ajuste1.2), col="red", type="o")
+lines(fitted(ajuste1.3), col="green", type="o")
+lines(fitted(ajuste1.4), col="yellow", type="o")
+##lines(fitted(ajuste1.5), col="brown", type="o")
+##lines(fitted(ajuste1.6), col="violet", type="o")
+
+####Grafbimbondo la media del pronostico de cada uno de los modelos
+lines(ajuste1.1$mean, col="blue", type="o")
+lines(ajuste1.2$mean, col="red", type="o")
+lines(ajuste1.3$mean, col="green", type="o")
+lines(ajuste1.4$mean, col="yellow", type="o")
+##lines(ajuste1.5$mean, col="brown", type="o")
+##lines(ajuste1.6$mean, col="violet", type="o")
+legend("topleft",lty=1, col=c(1,"blue","red","green","yellow","brown","violet"), 
+       c("data", expression("Lineal"), expression("Exponencial"),
+         expression("Aditivo Amortiguado"),expression("Mult. Amortiguado")),pch=1)
+
+names (ajuste1.1)
+aju1 <- ajuste1.1$fitted
+aju2 <- ajuste1.2$fitted
+aju3 <- ajuste1.3$fitted
+aju4 <- ajuste1.4$fitted
+
+resmod1 <- (bimbo - aju1)
+resmod2 <- (bimbo - aju2)
+resmod3 <- (bimbo - aju3)
+resmod4 <- (bimbo - aju4)
+
+modholt <- data.frame(bimbo, aju1, aju2, aju3, resmod1, resmod2, resmod3)
+View (modholt)
+res1 <- (resmod1- ajuste1.1$residuals)
+res2 <- (resmod2- ajuste1.2$residuals)
+res3 <- (resmod3- ajuste1.3$residuals)
+res4 <- (resmod4- ajuste1.4$residuals)
+
+modholtrest <- data.frame(res1,res2,res3,res4)
+View (modholtrest)
